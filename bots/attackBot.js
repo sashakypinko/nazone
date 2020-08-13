@@ -1,7 +1,8 @@
+/**
+ * AttackBot v.1.0
+ **/
 
-  /**
-  * AttackBot v.1.0
-  **/
+let globalDrid; //Todo нужно переписать под логику мятежа
 
 function attackBot() {
 
@@ -88,7 +89,7 @@ function attackBot() {
         console.log('milliseconds = ' + millis);
         setTimeout(() => {
             attackBot();
-        }, millis);
+        }, millis + 500);
     }
 
     function attack(url) {
