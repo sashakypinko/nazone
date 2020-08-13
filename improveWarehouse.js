@@ -35,3 +35,5 @@ function improveWarehouse(url = null) {
         improveWarehouse(url);
     }
 }
+
+improveWarehouse();
