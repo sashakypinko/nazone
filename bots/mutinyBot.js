@@ -23,7 +23,7 @@ function mutinyBot() {
         if (timesMutiny.length > 0) {
             timesMutiny.each(function () {
                 let href = $(this).prop('href'),
-                    regex = /\d[^&drid]/,
+                    regex = /\d+[^&drid]/,
                     duration = regex.exec(href);
 
                 clearInterval(reload);
@@ -34,7 +34,6 @@ function mutinyBot() {
     }
 
     function mutiny(href, duration) {
-
         $.ajax({
             url: href,
             type: 'GET',
@@ -42,7 +41,7 @@ function mutinyBot() {
                 updatePage(resp);
 
                 console.log($('.js-mutiny-wrapper').find('.page_game_patrol_index').children('.center').first().find('.block').text());
-                console.log("Начат мятеж на " + duration + " секунд")
+                console.log("Начат мятеж на " + duration + " секунд");
                 setTimeout(() => {
                     mutinyBot();
                 }, (duration * 1000) + 500);

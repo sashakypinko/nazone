@@ -24,7 +24,7 @@ function improveMining(url = null, type = null) {
             $jsWrapper.html(resp);
 
             let lim = $jsWrapper.find('.notifications_block .notice_content').text().indexOf("Недостаточно");
-            if (lim > 0) {
+            if (lim >= 0) {
                 console.log("Деньги закончились(");
                 return;
             }
