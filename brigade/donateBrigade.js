@@ -57,17 +57,15 @@ function donateScript() {
                 let notifContentText = $jsWrapper.find('.notifications_block .notice_content').text();
                 let luck = notifContentText.indexOf("Тебе повезло");
                 let lim = notifContentText.indexOf("Ты не можешь закинуть в общак больше");
-                let enough = notifContentText.indexOf("Недостаточно");
+                let enough = notifContentText.indexOf("недостаточно");
 
-                lim += enough;
-
-                if (lim < 0) {
+                if (lim < 0 && enough < 0) {
                     console.log("Improved successfully!");
                 } else {
                     console.log("Ресурсы закончились, всего сэкономлено:" + counterSavingMoney + ";");
                     return;
                 }
-                sendAjax(luck > 0);
+                sendAjax(luck > 0 && enough > 0);
             }
         });
     };
