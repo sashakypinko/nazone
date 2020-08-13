@@ -18,11 +18,11 @@ function improveWarehouse(url = null) {
             let lim = $jsWrapper.find('.notifications_block .notice_content').text().indexOf("Недостаточно");
             if (lim > 0) {
                 console.log("Деньги закончились(");
-                return
+                return;
             } else {
                 console.log("Improved successfully!");
             }
-            restartScript(drid);
+            restartScript($jsWrapper);
         }
     });
 
