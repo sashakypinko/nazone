@@ -1,10 +1,14 @@
-function improveMining(url = null, type = null) {
+function improveMining(url = null, type = null, amountLevels = null) {
     if (!type) {
         type = prompt('Введите тип:' +
             '- cigarette ' +
             '- tea ' +
             '- sock ' +
             '- juice ');
+    }
+
+    if (!amountLevels) {
+        amountLevels = prompt('Введите количество уровней');
     }
 
     if (!url) {
@@ -25,8 +29,8 @@ function improveMining(url = null, type = null) {
 
             let lim = $jsWrapper.find('.notifications_block .notice_content').text().indexOf("Недостаточно");
             if (lim >= 0) {
-                console.log("Деньги закончились(");
-                return;
+                alert("Деньги закончились(");
+                return location.reload();
             }
 
             console.log("Improved successfully!");
@@ -37,9 +41,9 @@ function improveMining(url = null, type = null) {
     function restartScript($jsWrapper, type) {
         let href = $jsWrapper.find('.items .description a').prop('href'),
             drid = href.substr(href.indexOf('&drid=') + 6),
-            url = "/game/business/improve_business?bs_type=" + type + "&amp;count=1000&amp;drid=" + drid;
+            url = "/game/business/improve_business?bs_type=" + type + "&amp;count=" + amountLevels + "&amp;drid=" + drid;
 
-        improveMining(url, type);
+        improveMining(url, type, amountLevels);
     }
 }
 

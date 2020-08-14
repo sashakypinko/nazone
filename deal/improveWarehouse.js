@@ -16,9 +16,9 @@ function improveWarehouse(url = null) {
             $jsWrapper.html(resp);
 
             let lim = $jsWrapper.find('.notifications_block .notice_content').text().indexOf("Недостаточно");
-            if (lim > 0) {
-                console.log("Деньги закончились(");
-                return;
+            if (lim >= 0) {
+                alert("Деньги закончились(");
+                return location.reload();
             } else {
                 console.log("Improved successfully!");
             }
