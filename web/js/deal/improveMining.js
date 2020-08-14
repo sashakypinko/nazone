@@ -13,7 +13,7 @@ function improveMining(url = null, type = null, amountLevels = null) {
 
     if (!url) {
         url = "/game/business/improve_business?bs_type=" + type +
-            "&amp;count=1000&amp;drid=" + $('.items .description a').prop('href').substr($('.items .description a').prop('href').indexOf('&drid=') + 6);
+            "&amp;count=" + amountLevels + "&amp;drid=" + $('.items .description a').prop('href').substr($('.items .description a').prop('href').indexOf('&drid=') + 6);
     }
 
     $.ajax({
