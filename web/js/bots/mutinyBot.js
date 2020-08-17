@@ -44,7 +44,7 @@ function mutinyBot() {
                 console.log("Начат мятеж на " + duration + " секунд");
                 setTimeout(() => {
                     mutinyBot();
-                }, (duration * 1000) + 1000);
+                }, (duration * 1000) + 2000);
             }
         });
     }
