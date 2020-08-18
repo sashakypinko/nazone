@@ -65,7 +65,7 @@ function donateScript() {
                     console.log("Ресурсы закончились, всего сэкономлено:" + counterSavingMoney + ";");
                     return;
                 }
-                sendAjax(luck > 0 && enough > 0);
+                sendAjax(luck > 0);
             }
         });
     };
