@@ -1,22 +1,12 @@
-/**
- * AttackBot v.1.0
- **/
-
-let globalDrid; //Todo нужно переписать под логику мятежа
-
-function attackBot() {
-
+function attackBot(mode) {
     let findTryingCounter = 0;
-
     let reload = setInterval(() => {
         reloadPage();
     }, 500);
 
     function reloadPage() {
-        let level = getLevel();
-
         $.ajax({
-            url: 'http://nazone.mobi/game/fight/find?level=' + level,
+            url: 'http://nazone.mobi/game/fight/find?level=' + getLevel(),
             type: 'GET',
             success: function (res) {
                 let body = $('body');
@@ -35,12 +25,11 @@ function attackBot() {
         if (findTryingCounter > 30) {
             return level + 1;
         }
-
         return level + 2;
     }
 
     function getOwnLevel() {
-        return $($($($('.user_stats')[0]).children()[0]).children()[0]).text().match(/\d+/g)[0];
+        return parseInt($($($($('.user_stats')[0]).children()[0]).children()[0]).text().match(/\d+/g)[0]);
     }
 
     function getOwnParams() {
@@ -70,10 +59,9 @@ function attackBot() {
     function isPossiblyToAttack() {
         let myParams = getOwnParams(),
             hisParams = getHisParams();
-        if (((myParams.strength - hisParams.protection) - (hisParams.strength - myParams.protection)) < 0) {
+        if ((((myParams.strength - hisParams.protection) - (hisParams.strength - myParams.protection)) < mode) || hasMarkNotAttack()) {
             return false;
         }
-
         return !(((myParams.flexibility + myParams.accuracy) - (hisParams.flexibility + hisParams.accuracy)) < -20)
     }
 
@@ -89,7 +77,7 @@ function attackBot() {
         console.log('milliseconds = ' + millis);
         setTimeout(() => {
             attackBot();
-        }, millis + 500);
+        }, millis);
     }
 
     function attack(url) {
@@ -108,15 +96,14 @@ function attackBot() {
 
     function tryAttack() {
         findTryingCounter++;
-
-        if (isPossiblyToAttack() && !hasMark()) {
+        if (isPossiblyToAttack()) {
             clearInterval(reload);
             attack(getAttackUrl());
         }
     }
 
     function getUserId() {
-        return $($($('.user_link')[2]).children()[0]).attr('href').match(/\d+/g)[0];
+        return $($($('.user_link')[1]).children()[0]).attr('href').match(/\d+/g)[0];
     }
 
     function markNotAttack(id) {
@@ -127,9 +114,15 @@ function attackBot() {
         });
     }
 
-    function hasMark() {
-        return $($($($($('.center')[0]).children()[1]).children()[0]).children()[1]).hasClass('fight_skip');
+    function hasMarkNotAttack() {
+        let hasMark = false;
+        $('body').find('a').each((index, item) => {
+            if ($(item).attr('href').match(/remove_relation/g)) {
+                hasMark = true;
+            }
+        });
+        return hasMark;
     }
 }
 
-attackBot();
+attackBot(0);

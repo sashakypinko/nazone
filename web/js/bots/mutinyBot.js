@@ -1,7 +1,6 @@
 let globalDrid;
 
 function mutinyBot() {
-
     let reload = setInterval(() => {
         reloadPage();
     }, 500);
@@ -19,13 +18,11 @@ function mutinyBot() {
 
     function tryMutiny() {
         let timesMutiny = $('.page_game_patrol_index .links_action a[href*="patrol"]');
-
         if (timesMutiny.length > 0) {
             timesMutiny.each(function () {
                 let href = $(this).prop('href'),
                     regex = /\d+[^&drid]/,
                     duration = regex.exec(href);
-
                 clearInterval(reload);
                 mutiny(href, duration);
                 return false;
@@ -39,7 +36,6 @@ function mutinyBot() {
             type: 'GET',
             success: function (resp) {
                 updatePage(resp);
-
                 console.log($('.js-mutiny-wrapper').find('.page_game_patrol_index').children('.center').first().find('.block').text());
                 console.log("Начат мятеж на " + duration + " секунд");
                 setTimeout(() => {
@@ -48,6 +44,16 @@ function mutinyBot() {
             }
         });
     }
+}
+
+function getDrid() {
+    let drid = '';
+    $('body').find('a').each((index, item) => {
+        if ($(item).attr('href').match(/drid/g)) {
+            drid = $(item).attr('href').split('drid=')[1].match(/\d+/)[0];
+        }
+    });
+    return drid;
 }
 
 function updatePage(resp) {
@@ -59,7 +65,7 @@ function updatePage(resp) {
     $jsWrapper.html(resp);
 
     function updateDrid($wrapper) {
-        globalDrid = $wrapper.find('.hp_bars a:nth-child(4)').prop('href').substr($('.hp_bars a:nth-child(4)').prop('href').indexOf('&drid=') + 6)
+        globalDrid = getDrid();
     }
 
     updateDrid($jsWrapper);
