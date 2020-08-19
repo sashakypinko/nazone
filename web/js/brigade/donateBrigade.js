@@ -1,7 +1,7 @@
 function donateScript() {
     let url = "/game/clan/donate_perform",
         data = new FormData(),
-        counterLuck = 0,
+        counterUnluck = 0,
         money = 1,
         resourceType = prompt('Какой ресурс? ' +
             '- money - купы; ' +
@@ -16,20 +16,20 @@ function donateScript() {
     let sendAjax = (luck = false) => {
         if (!luck) {
             switch (true) {
-                case (counterLuck === 12):
+                case (counterUnluck === 12):
                     if (resourceType === 'money') {
                         money = 10000;
                     } else {
                         money = 10;
                     }
                     break;
-                case (counterLuck > 12):
+                case (counterUnluck > 12):
                     money += 1000;
                     break;
-                case (counterLuck > 15):
+                case (counterUnluck > 15):
                     money *= 1.2;
                     break;
-                case (counterLuck > 18):
+                case (counterUnluck > 18):
                     money *= 2;
                     break;
             }
@@ -38,7 +38,7 @@ function donateScript() {
 
             counterSavingMoney += money;
             money = 1;
-            counterLuck = 0;
+            counterUnluck = 0;
         }
 
         if (resourceType !== 'money') {
@@ -46,7 +46,7 @@ function donateScript() {
         }
         data.append(resourceType, money);
 
-        counterLuck++;
+        counterUnluck++;
 
         $.ajax({
             url: url,
