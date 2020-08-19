@@ -4,6 +4,7 @@ function squeezeBot() {
         foundChips = 0,
         lostChips = 0,
         squeezeCount = getAvailableSqueezeCount();
+
     function squeeze() {
         $.ajax({
             url: 'http://nazone.mobi' + findUrl + getDrid(),
@@ -14,22 +15,24 @@ function squeezeBot() {
             }
         });
     }
+
     function getAward() {
         $.ajax({
             url: 'http://nazone.mobi' + getAwardUrl + getDrid(),
             type: 'GET',
             success: res => {
                 replaceContainer(res);
-                foundChips += getStolenChipsCount();
+                foundChips += getStolenChipsCount(true);
                 squeezeCount--;
-                console.log("Удалось украсть фишек  ---  " + getStolenChipsCount());
+                console.log("Удалось украсть фишек  ---  " + getStolenChipsCount(true));
                 waitNextSqueeze();
             }
         });
     }
+
     function waitNextSqueeze() {
         if (squeezeCount > 0) {
-            console.log('millis to next mine  ---   '+ getRemaindMillis())
+            console.log('millis to next mine  ---   ' + getRemaindMillis())
             setTimeout(() => {
                 trySqueeze(true);
             }, getRemaindMillis());
@@ -37,6 +40,7 @@ function squeezeBot() {
             showResults();
         }
     }
+
     function trySqueeze(success = false) {
         if (success) {
             squeeze();
@@ -56,9 +60,10 @@ function squeezeBot() {
             waitNextSqueeze();
         }
     }
+
     function getPermissionForSqueeze() {
         let luck = getPercentageOfLuck(),
-            chipsCount = getStolenChipsCount();
+            chipsCount = getStolenChipsCount(true);
         if (luck >= 40) {
             if (chipsCount >= 4) {
                 return false
@@ -76,6 +81,7 @@ function squeezeBot() {
             return true;
         }
     }
+
     function getPercentageOfLuck() {
         let luck = 0;
         $('body').find('.block').each((index, item) => {
@@ -85,15 +91,26 @@ function squeezeBot() {
         });
         return parseInt(luck);
     }
-    function getStolenChipsCount() {
-        let count = 0;
-        $('body').find('span').each((index, item) => {
+
+    function getStolenChipsCount(isSuccess = false) {
+        let count = 0,
+            spanSelector;
+
+        if (isSuccess) {
+            spanSelector = 'span.value:last';
+        } else {
+            spanSelector = '.notice_content span.value';
+        }
+
+        $('body').find(spanSelector).each((index, item) => {
             if ($(item).text().match(/фиш/g)) {
                 count = $(item).text().match(/\d+/)[0];
+                return false;
             }
         });
         return parseInt(count);
     }
+
     function getDrid() {
         let drid = '';
         $('body').find('a').each((index, item) => {
@@ -103,14 +120,17 @@ function squeezeBot() {
         });
         return drid;
     }
+
     function replaceContainer(data) {
         let body = $('body');
         body.children().remove();
         body.append(data);
     }
+
     function getRemaindMillis() {
-        return parseInt($($('.remain_seconds')[$('.remain_seconds').length - 1]).text()) * 1000 +2000;
+        return parseInt($($('.remain_seconds')[$('.remain_seconds').length - 1]).text()) * 1000 + 2000;
     }
+
     function getAvailableSqueezeCount() {
         let count = 0;
         $('body').find('a').each((index, item) => {
@@ -120,11 +140,13 @@ function squeezeBot() {
         });
         return parseInt(count);
     }
+
     function showResults() {
         console.log('----------------------------------------');
         console.log('Всего украдено --- ' + foundChips);
         console.log('Всего не удалось украсть --- ' + lostChips);
     }
+
     function isSuccess() {
         let success = false;
         $('body').find('a').each((index, item) => {
@@ -134,6 +156,8 @@ function squeezeBot() {
         });
         return success;
     }
+
     trySqueeze(true);
 }
+
 squeezeBot();
