@@ -14,41 +14,27 @@ function ratBot() {
         treatedCount = 0,
         fedCount = 0;
 
-    function init() {
-        $.ajax({
-            url: 'http://nazone.mobi/game/tamagochi',
-            type: 'GET',
-            success: res => {
-                replaceContainer(res);
-                walksCount = getWalksCount();
-                runsCount = getRunsCount();
-                gamesCount = getGamesCount();
-                improveParameters();
-            }
-        });
-    }
-
     function improveParameters() {
         if (getMoney() >= 500) {
-            if (getBodilyParams().healty <= 90 || treatedCount < 2) {
+            if (getBodilyParams().healty <= 90 && treatedCount < 2) {
                 raiseParameter(prepareUrl(getParamUrl('health')), 1000);
                 addLog(' + 10 к здоровью ');
                 treatedCount++;
-            } else if (getBodilyParams().satiety <= 85 || fedCount < 2) {
+            } else if (getBodilyParams().satiety <= 85 && fedCount < 2) {
                 raiseParameter(prepareUrl(getParamUrl('satiety')), 1000);
                 addLog(' + 15 к сытости ');
                 fedCount++;
             } else if (gamesCount && getLeastParamValue(getMainParams()) < 90 && getBodilyParams().health >= 50) {
                 raiseParameter(prepareUrl(getParamUrl(getLeastParamKey(getMainParams()))), 122000);
                 gamesCount--;
-            } else if (walksCount && getBodilyParams().health >= 50) {
-                raiseParameter(walk + getDrid() + '&id=' + getId, 3600000);
-                addLog('Крыса пошла на прогулку и вернется через час');
-                walksCount--;
             } else if (runsCount && getBodilyParams().health >= 50) {
-                raiseParameter(race + getDrid(), 3600000);
+                goRaceOrWalk(race + getDrid(), 3600000);
                 addLog('Крыса отправилась на бега и вернется через час');
                 runsCount--;
+            } else if (walksCount && getBodilyParams().health >= 50) {
+                goRaceOrWalk(walk + getDrid() + '&id=' + getId, 3600000);
+                addLog('Крыса пошла на прогулку и вернется через час');
+                walksCount--;
             } else {
                 addLog('Здесь больше нечего делать');
             }
@@ -60,6 +46,18 @@ function ratBot() {
     function raiseParameter(param, timeout) {
         $.ajax({
             url: prepareUrl(param),
+            type: 'GET',
+            success: res => {
+                setTimeout(() => {
+                    openMainPage();
+                }, timeout);
+            }
+        });
+    }
+
+    function goRaceOrWalk(url, timeout) {
+        $.ajax({
+            url: url,
             type: 'GET',
             success: res => {
                 setTimeout(() => {
@@ -148,6 +146,10 @@ function ratBot() {
             type: 'GET',
             success: res => {
                 replaceContainer(res);
+                walksCount = getWalksCount();
+                runsCount = getRunsCount();
+                gamesCount = getGamesCount();
+
                 improveParameters();
             }
         });
@@ -177,19 +179,21 @@ function ratBot() {
 
     function getActionCount(action) {
         let count = 0;
-        $('body').find('li').each((index, item) => {
+        $('body').find('.description li').each((index, item) => {
             if ($(item).text().match(new RegExp(action, 'g'))) {
                 count = $(item).text().split(': ')[1];
+                return false;
             }
-        })
+        });
         return parseInt(count);
     }
 
     function getMoney() {
         let money = 0;
-        $('body').find('a').each((index, item) => {
+        $('body').find('.money_item a').each((index, item) => {
             if ($(item).attr('href') == '/game/exchange') {
                 money = $(item).text().replace(' ', '');
+                return false;
             }
         });
         return parseInt(money);
