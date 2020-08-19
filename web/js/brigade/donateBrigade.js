@@ -15,14 +15,23 @@ function donateScript() {
 
     let sendAjax = (luck = false) => {
         if (!luck) {
-            if (counterLuck === 18) {
-                if (resourceType === 'money') {
-                    money = 10000;
-                } else {
-                    money = 10;
-                }
-            } else if (counterLuck > 18) {
-                money *= 1.2;
+            switch (true) {
+                case (counterLuck === 12):
+                    if (resourceType === 'money') {
+                        money = 10000;
+                    } else {
+                        money = 10;
+                    }
+                    break;
+                case (counterLuck > 12):
+                    money += 1000;
+                    break;
+                case (counterLuck > 15):
+                    money *= 1.2;
+                    break;
+                case (counterLuck > 18):
+                    money *= 2;
+                    break;
             }
         } else {
             console.log("Сэкономил - " + money + ';');
