@@ -24,7 +24,11 @@ function donateScript() {
                     }
                     break;
                 case (counterUnluck > 12):
-                    money += 1000;
+                    if (resourceType === 'money') {
+                        money += 1000;
+                    } else {
+                        money += 10;
+                    }
                     break;
                 case (counterUnluck > 15):
                     money *= 1.2;

@@ -3,7 +3,7 @@ let globalDrid;
 function mutinyBot() {
     let reload = setInterval(() => {
         reloadPage();
-    }, 500);
+    }, 2000);
 
     function reloadPage() {
         $.ajax({
@@ -51,6 +51,7 @@ function getDrid() {
     $('body').find('a').each((index, item) => {
         if ($(item).attr('href').match(/drid/g)) {
             drid = $(item).attr('href').split('drid=')[1].match(/\d+/)[0];
+            return false;
         }
     });
     return drid;
