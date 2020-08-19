@@ -71,22 +71,16 @@ function ratBot() {
         switch (param) {
             case 'toothiness':
                 return toothinessUp;
-                break;
             case 'intellect':
                 return intellectUp;
-                break;
             case 'endurance':
                 return enduranceUp;
-                break;
             case 'dodge':
                 return dodgeUp;
-                break;
             case 'health':
                 return healthUp;
-                break;
             case 'satiety':
                 return satietyUp;
-                break;
         }
     }
 

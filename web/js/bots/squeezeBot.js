@@ -32,10 +32,10 @@ function squeezeBot() {
 
     function waitNextSqueeze() {
         if (squeezeCount > 0) {
-            console.log('millis to next mine  ---   ' + getRemaindMillis())
+            console.log('millis to next mine  ---   ' + getRemaindMillis());
             setTimeout(() => {
                 trySqueeze(true);
-            }, getRemaindMillis());
+            }, 60000);
         } else {
             showResults();
         }
@@ -87,6 +87,7 @@ function squeezeBot() {
         $('body').find('.block').each((index, item) => {
             if ($(item).text().match(/пойманным/g)) {
                 luck = $($(item).children()[0]).text().match(/\d+/)[0];
+                return false;
             }
         });
         return parseInt(luck);
@@ -113,9 +114,11 @@ function squeezeBot() {
 
     function getDrid() {
         let drid = '';
+
         $('body').find('a').each((index, item) => {
             if ($(item).attr('href').match(/drid/g)) {
                 drid = $(item).attr('href').split('drid=')[1].match(/\d+/)[0];
+                return false;
             }
         });
         return drid;
@@ -136,6 +139,7 @@ function squeezeBot() {
         $('body').find('a').each((index, item) => {
             if ($(item).text().match(/Шмон /g)) {
                 count = $(item).text().split('(')[1].match(/\d+/)[0];
+                return false;
             }
         });
         return parseInt(count);
