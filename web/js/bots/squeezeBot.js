@@ -6,38 +6,22 @@ function squeezeBot() {
         squeezeCount = getAvailableSqueezeCount();
 
     function squeeze() {
-        $.ajax({
-            url: 'http://nazone.mobi' + findUrl + getDrid(),
-            type: 'GET',
-            success: res => {
-                replaceContainer(res);
-                trySqueeze();
-            }
-        });
-    }
+        sendAjax();
 
-    function getAward() {
-        $.ajax({
-            url: 'http://nazone.mobi' + getAwardUrl + getDrid(),
-            type: 'GET',
-            success: res => {
-                replaceContainer(res);
-                foundChips += getStolenChipsCount(true);
-                squeezeCount--;
-                console.log("Удалось украсть фишек  ---  " + getStolenChipsCount(true));
-                waitNextSqueeze();
-            }
-        });
-    }
-
-    function waitNextSqueeze() {
-        if (squeezeCount > 0) {
-            console.log('millis to next mine  ---   ' + getRemaindMillis());
-            setTimeout(() => {
-                trySqueeze(true);
-            }, 60000);
-        } else {
-            showResults();
+        function sendAjax() {
+            $.ajax({
+                url: 'http://nazone.mobi' + findUrl + getDrid(),
+                type: 'GET',
+                success: res => {
+                    replaceContainer(res);
+                    let notifContentText = $('.notifications_block .notice_content').text();
+                    let luck = notifContentText.indexOf("Ты совершил одно действие");
+                    if (luck >= 0) {
+                        return sendAjax();
+                    }
+                    trySqueeze();
+                }
+            });
         }
     }
 
@@ -57,28 +41,50 @@ function squeezeBot() {
             lostChips += getStolenChipsCount();
             squeezeCount--;
             console.log("Не удалось украсть фишек  ---  " + getStolenChipsCount());
-            waitNextSqueeze();
+            setTimeout(function () {
+                waitNextSqueeze();
+            }, 200);
+        }
+    }
+
+    function getAward() {
+        $.ajax({
+            url: 'http://nazone.mobi' + getAwardUrl + getDrid(),
+            type: 'GET',
+            success: res => {
+                replaceContainer(res);
+                foundChips += getStolenChipsCount(true);
+                squeezeCount--;
+                console.log("Удалось украсть фишек  ---  " + getStolenChipsCount(true));
+                setTimeout(function () {
+                    waitNextSqueeze();
+                }, 200);
+            }
+        });
+    }
+
+    function waitNextSqueeze() {
+        let remaindMillis = getRemaindMillis();
+        if (squeezeCount > 0) {
+            console.log('millis to next mine  ---   ' + remaindMillis);
+            setTimeout(() => {
+                trySqueeze(true);
+            }, remaindMillis);
+        } else {
+            showResults();
         }
     }
 
     function getPermissionForSqueeze() {
         let luck = getPercentageOfLuck(),
             chipsCount = getStolenChipsCount(true);
-        if (luck >= 40) {
-            if (chipsCount >= 4) {
-                return false
-            }
-            return true;
+
+        if (luck >= 35) {
+            return chipsCount < 4;
         } else if (luck >= 20) {
-            if (chipsCount >= 10) {
-                return false
-            }
-            return true;
+            return chipsCount < 10;
         } else {
-            if (chipsCount >= 13) {
-                return false
-            }
-            return true;
+            return chipsCount < 13;
         }
     }
 
@@ -136,8 +142,9 @@ function squeezeBot() {
 
     function getAvailableSqueezeCount() {
         let count = 0;
-        $('body').find('a').each((index, item) => {
-            if ($(item).text().match(/Шмон /g)) {
+
+        $('body').find('.title_sub  a').each((index, item) => {
+            if ($(item).prop('href').match(/\/game\/mine/g) && $(item).text().match(/Шмон /g)) {
                 count = $(item).text().split('(')[1].match(/\d+/)[0];
                 return false;
             }
@@ -156,6 +163,7 @@ function squeezeBot() {
         $('body').find('a').each((index, item) => {
             if ($(item).hasClass('button_big')) {
                 success = true;
+                return false;
             }
         });
         return success;
