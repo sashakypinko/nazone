@@ -21,7 +21,6 @@ function squeezeBot() {
                     let doubleAction = notifContentText.indexOf("Ты совершил одно действие");
                     let security = notifContentText.indexOf("Ты ждешь, пока уйдет охрана");
                     if (doubleAction >= 0 || security >= 0) {
-                        squeezeCount++;
                         return sendAjax();
                     }
                     trySqueeze();
