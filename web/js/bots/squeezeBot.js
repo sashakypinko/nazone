@@ -5,6 +5,9 @@ function squeezeBot() {
         lostChips = 0,
         squeezeCount = getAvailableSqueezeCount();
 
+    console.log('Доступно шмонов: ' + squeezeCount);
+    console.log('----------------------------------------');
+
     function squeeze() {
         sendAjax();
 
@@ -15,8 +18,10 @@ function squeezeBot() {
                 success: res => {
                     replaceContainer(res);
                     let notifContentText = $('.notifications_block .notice_content').text();
-                    let luck = notifContentText.indexOf("Ты совершил одно действие");
-                    if (luck >= 0) {
+                    let doubleAction = notifContentText.indexOf("Ты совершил одно действие");
+                    let security = notifContentText.indexOf("Ты ждешь, пока уйдет охрана");
+                    if (doubleAction >= 0 || security >= 0) {
+                        squeezeCount++;
                         return sendAjax();
                     }
                     trySqueeze();
