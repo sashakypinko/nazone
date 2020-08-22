@@ -20,9 +20,14 @@ function squeezeBot() {
                     let notifContentText = $('.notifications_block .notice_content').text();
                     let doubleAction = notifContentText.indexOf("Ты совершил одно действие");
                     let security = notifContentText.indexOf("Ты ждешь, пока уйдет охрана");
-                    if (doubleAction >= 0 || security >= 0) {
+
+                    if (doubleAction >= 0) {
+                        squeezeCount++;
+                        return sendAjax();
+                    } else if (security >= 0) {
                         return sendAjax();
                     }
+
                     trySqueeze();
                 }
             });
