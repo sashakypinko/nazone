@@ -73,7 +73,7 @@ function donateScript() {
                 let enough = notifContentText.indexOf("недостаточно");
 
                 if (lim < 0 && enough < 0) {
-                    console.log("Improved successfully!");
+                    console.log("Donated successfully!");
                 } else {
                     console.log("Ресурсы закончились, всего сэкономлено:" + counterSavingMoney + ";");
                     return;

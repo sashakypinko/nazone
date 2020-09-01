@@ -1,4 +1,4 @@
-function improveMining(url = null, type = null, amountLevels = null) {
+function improveMining(url = null, type = null, amountLevels = null, isForeach = false) {
     if (!type) {
         type = prompt('Введите тип:' +
             '- cigarette ' +
@@ -14,6 +14,34 @@ function improveMining(url = null, type = null, amountLevels = null) {
     if (!url) {
         url = "/game/business/improve_business?bs_type=" + type +
             "&amp;count=" + amountLevels + "&amp;drid=" + $('.items .description a').prop('href').substr($('.items .description a').prop('href').indexOf('&drid=') + 6);
+    }
+
+    if (isForeach) {
+            for (var i = 0; i < 30; i++) {
+                setTimeout(function () {
+                    $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (resp) {
+                        if ($('.js-wrapper').length <= 0) {
+                            $('body').append('<div class="js-wrapper"></div>');
+                        }
+                        let $jsWrapper = $('.js-wrapper');
+                        $jsWrapper.html('');
+                        $jsWrapper.html(resp);
+
+                        let lim = $jsWrapper.find('.notifications_block .notice_content').text().indexOf("Недостаточно");
+                        if (lim >= 0) {
+                            alert("Деньги закончились(");
+                            return location.reload();
+                        }
+
+                        console.log("Improved successfully!");
+                    }
+                });
+                }, 500)
+            }
+        return;
     }
 
     $.ajax({
@@ -47,4 +75,4 @@ function improveMining(url = null, type = null, amountLevels = null) {
     }
 }
 
-improveMining();
+improveMining(null, null, null, 1);
