@@ -21,13 +21,13 @@ function mutinyBot() {
     function tryMutiny() {
         let timesMutiny = $('.page_game_patrol_index .links_action a[href*="patrol"]');
         if (timesMutiny.length > 0) {
-            clearInterval(reload);
             timesMutiny.each(function () {
                 let href = $(this).prop('href'),
                     regex = /\d+[^&drid]/,
                     duration = regex.exec(href);
 
                 mutiny(href, duration);
+                clearInterval(reload);
                 return false;
             })
         }
