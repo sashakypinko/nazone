@@ -9,6 +9,8 @@ function donateScript() {
             '- staff - фишки налом; '),
         counterSavingMoney = 0;
 
+    console.clear();
+
     data.append('authenticity_token', $('input[name=authenticity_token]').val());
     data.append('utf8', "%E2%9C%93");
     data.append('commit', "Закинуть");
@@ -73,7 +75,7 @@ function donateScript() {
                 let enough = notifContentText.indexOf("недостаточно");
 
                 if (lim < 0 && enough < 0) {
-                    console.log("Improved successfully!");
+                    console.log("Donated successfully!");
                 } else {
                     console.log("Ресурсы закончились, всего сэкономлено:" + counterSavingMoney + ";");
                     return;

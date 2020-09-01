@@ -7,6 +7,8 @@ function improveMining(url = null, type = null, amountLevels = null) {
             '- juice ');
     }
 
+    console.clear();
+
     if (!amountLevels) {
         amountLevels = prompt('Введите количество уровней');
     }
