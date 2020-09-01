@@ -4,6 +4,9 @@ function improveWarehouse(url = null) {
             $('.items .description a').prop('href').substr($('.items .description a').prop('href').indexOf('&drid=') + 6) +
             "&amp;url=%2Fgame%2Fbusiness%2Fwarehouse_improve";
     }
+
+    console.clear();
+
     $.ajax({
         url: url,
         type: 'GET',

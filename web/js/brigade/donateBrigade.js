@@ -9,6 +9,8 @@ function donateScript() {
             '- staff - фишки налом; '),
         counterSavingMoney = 0;
 
+    console.clear();
+
     data.append('authenticity_token', $('input[name=authenticity_token]').val());
     data.append('utf8', "%E2%9C%93");
     data.append('commit', "Закинуть");

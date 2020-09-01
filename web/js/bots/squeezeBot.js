@@ -5,6 +5,7 @@ function squeezeBot() {
         lostChips = 0,
         squeezeCount = getAvailableSqueezeCount();
 
+    console.clear();
     console.log('Доступно шмонов: ' + squeezeCount);
     console.log('----------------------------------------');
 
@@ -74,13 +75,21 @@ function squeezeBot() {
 
     function waitNextSqueeze() {
         let remaindMillis = getRemaindMillis();
-        if (squeezeCount > 0) {
-            console.log('millis to next mine  ---   ' + remaindMillis);
-            setTimeout(() => {
-                trySqueeze(true);
-            }, remaindMillis);
+        if (!isNaN(remaindMillis)) {
+            setTimeout(function () {
+                remaindMillis = getRemaindMillis();
+
+                if (squeezeCount > 0) {
+                    console.log('millis to next mine  ---   ' + remaindMillis);
+                    setTimeout(() => {
+                        trySqueeze(true);
+                    }, remaindMillis);
+                } else {
+                    showResults();
+                }
+            }, 100);
         } else {
-            showResults();
+            squeeze();
         }
     }
 

@@ -5,6 +5,8 @@ function mutinyBot() {
         reloadPage();
     }, 2000);
 
+    console.clear();
+
     function reloadPage() {
         $.ajax({
             url: 'http://nazone.mobi/game/patrol',
@@ -23,8 +25,9 @@ function mutinyBot() {
                 let href = $(this).prop('href'),
                     regex = /\d+[^&drid]/,
                     duration = regex.exec(href);
-                clearInterval(reload);
+
                 mutiny(href, duration);
+                clearInterval(reload);
                 return false;
             })
         }
@@ -39,7 +42,7 @@ function mutinyBot() {
                 console.log($('.js-mutiny-wrapper').find('.page_game_patrol_index').children('.center').first().find('.block').text());
                 console.log("Начат мятеж на " + duration + " секунд");
                 setTimeout(() => {
-                    mutinyBot();
+                    reloadPage();
                 }, (duration * 1000) + 2000);
             }
         });
