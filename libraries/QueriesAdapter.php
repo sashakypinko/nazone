@@ -17,7 +17,7 @@ class QueriesAdapter
         }
         $headers = [
             "Cache-Control: no-cache",
-            "Cookie: _session_id=4edbdd3db3e9bb145437684ced0abae6; __utma=91059205.533593149.1597402233.1597402233.1597402233.1; __utmc=91059205; __utmz=91059205.1597402233.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); remember_token=2ef63b09644ba595892ced3b08f8ac16; remember_token2=3193132; browser_id=aacfe95051635a199a36b6b57b64a090; js_use=1; screen_height=952; __utmb=91059205.13.10.1597402233"
+            "Cookie: __utmc=91059205; __utmz=91059205.1597402233.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); remember_token2=3193132; browser_id=aacfe95051635a199a36b6b57b64a090; js_use=1; screen_height=952; screen_width=800; remember_token=ff9fe575e6960178bee43da5fdf531c3; __utma=91059205.533593149.1597402233.1598965541.1598965545.24; __utmb=91059205.63.10.1598965545; _session_id=b6ac2c8fa0ec72784564dc5387cdb08e"
         ];
 
         $cr = curl_init();
