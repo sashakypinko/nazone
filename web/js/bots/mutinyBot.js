@@ -30,6 +30,8 @@ function mutinyBot() {
                 clearInterval(reload);
                 return false;
             })
+        } else {
+            setTimeout(reloadPage, 1000);
         }
     }
 
