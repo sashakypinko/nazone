@@ -18,7 +18,7 @@ function donateScript() {
     let sendAjax = (luck = false) => {
         if (!luck) {
             switch (true) {
-                case (counterUnluck > 5):
+                case (counterUnluck > 5 && counterUnluck <= 12):
                     if (resourceType === 'money') {
                         money = 1000;
                     } else {
