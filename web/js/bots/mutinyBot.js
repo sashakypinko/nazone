@@ -43,9 +43,7 @@ function mutinyBot() {
                 updatePage(resp);
                 console.log($('.js-mutiny-wrapper').find('.page_game_patrol_index').children('.center').first().find('.block').text());
                 console.log("Начат мятеж на " + duration + " секунд");
-                setTimeout(() => {
-                    mutinyBot();
-                }, (duration * 1000) + 2000);
+                setTimeout(reloadPage, (duration * 1000) + 2000);
             }
         });
     }

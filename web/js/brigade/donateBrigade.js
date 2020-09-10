@@ -18,6 +18,13 @@ function donateScript() {
     let sendAjax = (luck = false) => {
         if (!luck) {
             switch (true) {
+                case (counterUnluck > 5):
+                    if (resourceType === 'money') {
+                        money = 1000;
+                    } else {
+                        money = 2;
+                    }
+                    break;
                 case (counterUnluck === 12):
                     if (resourceType === 'money') {
                         money = 10000;
